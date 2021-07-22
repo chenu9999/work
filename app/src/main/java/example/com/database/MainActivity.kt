@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
         dbrw = MySQLiteOpenHelper(this).writableDatabase
 
         btn_query.setOnClickListener {
-            val c = dbrw.rawQuery(if(ed_book.length()<1) "SELECT * FROM myTable"
-            else "SELECT * FROM myTable WHERE book LIKE '${ed_book.text}'",null)
+            val c = dbrw.rawQuery(if(ed_id.length()<1) "SELECT * FROM myTable"
+            else "SELECT * FROM myTable WHERE book LIKE '${ed_id.text}'",null)
             //從第一筆開始輸出
             c.moveToFirst()
             //清空舊資料
@@ -45,13 +45,13 @@ class MainActivity : AppCompatActivity() {
 
         btn_insert.setOnClickListener {
             //判斷是否沒有填入書名或價格
-            if (ed_book.length()<1 || ed_price.length()<1)
+            if (ed_id.length()<1 || ed_name.length()<1)
                 showToast("欄位請勿留空")
             else
                 try{
                     //新增一筆book與price資料進入myTable資料表
-                    dbrw.execSQL("INSERT INTO myTable(book, price) VALUES(?,?)", arrayOf<Any?>(ed_book.text.toString(), ed_price.text.toString()))
-                    showToast("新增書名${ed_book.text}    價格${ed_price.text}")
+                    dbrw.execSQL("INSERT INTO myTable(book, price) VALUES(?,?)", arrayOf<Any?>(ed_id.text.toString(), ed_name.text.toString()))
+                    showToast("新增書名${ed_id.text}    價格${ed_name.text}")
                     cleanEditText()
                 }catch (e: Exception){
                     showToast("新增失敗:$e")
@@ -60,13 +60,13 @@ class MainActivity : AppCompatActivity() {
 
         btn_update.setOnClickListener {
             //判斷是否沒有填入書名或價格
-            if (ed_book.length()<1 || ed_price.length()<1)
+            if (ed_id.length()<1 || ed_name.length()<1)
                 showToast("欄位請勿留空")
             else
                 try{
                     //更新book欄位為輸入字串（ed_book）的資料的price欄位數值
-                    dbrw.execSQL("UPDATE myTable SET price = ${ed_price.text} WHERE book LIKE '${ed_book.text}'")
-                    showToast("更新書名${ed_book.text}    價格${ed_price.text}")
+                    dbrw.execSQL("UPDATE myTable SET price = ${ed_name.text} WHERE book LIKE '${ed_id.text}'")
+                    showToast("更新書名${ed_id.text}    價格${ed_name.text}")
                     cleanEditText()
                 }catch (e: Exception){
                     showToast("更新失敗:$e")
@@ -75,13 +75,13 @@ class MainActivity : AppCompatActivity() {
 
         btn_delete.setOnClickListener {
             //判斷是否沒有填入書名
-            if (ed_book.length()<1)
+            if (ed_id.length()<1)
                 showToast("書名請勿留空")
             else
                 try{
                     //從myTable資料表刪除book欄位為輸入字串（ed_book）的資料
-                    dbrw.execSQL("DELETE FROM myTable WHERE book LIKE '${ed_book.text}'")
-                    showToast("刪除書名${ed_book.text}")
+                    dbrw.execSQL("DELETE FROM myTable WHERE book LIKE '${ed_id.text}'")
+                    showToast("刪除書名${ed_id.text}")
                     cleanEditText()
                 }catch (e: Exception){
                     showToast("刪除失敗:$e")
@@ -93,8 +93,8 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this,text, Toast.LENGTH_LONG).show()
     //清空輸入欄
     private fun cleanEditText(){
-        ed_book.setText("")
-        ed_price.setText("")
+        ed_id.setText("")
+        ed_name.setText("")
     }
 
     override fun onDestroy() {
